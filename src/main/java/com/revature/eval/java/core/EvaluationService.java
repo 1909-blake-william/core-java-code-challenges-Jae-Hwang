@@ -1,5 +1,7 @@
 package com.revature.eval.java.core;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -294,8 +296,36 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
-			return 0;
+
+			// System.out.println(sortedList.toString());
+
+			boolean upper; // true = upper; false = lower;
+
+			int i = (int) Math.floor(sortedList.size() / 2);
+			List<T> subList;
+			int subListResult;
+
+			if (sortedList.get(i).compareTo(t) == 0) {
+				return i;
+			} else if (sortedList.size() == 1) {
+				return -1;
+			} else if (sortedList.get(i).compareTo(t) > 0) {
+				subList = sortedList.subList(0, i);
+				subListResult = new BinarySearch<>(subList).indexOf(t);
+				if (subListResult == -1) {
+					return -1;
+				} else {
+					return subListResult;
+				}
+			} else {
+				subList = sortedList.subList(i, sortedList.size());
+				subListResult = new BinarySearch<>(subList).indexOf(t);
+				if (subListResult == -1) {
+					return -1;
+				} else {
+					return i + subListResult;
+				}
+			}
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -329,34 +359,32 @@ public class EvaluationService {
 	 * 
 	 * @param string
 	 * @return
-	 */	
+	 */
 	public String toPigLatin(String string) {
 		String[] stringArray = string.split(" ");
 		StringBuilder tempFirst;
 		StringBuilder tempLast;
 		StringBuilder result = new StringBuilder();
-		
-		for (int i = 0; i < stringArray.length; i ++) {
+
+		for (int i = 0; i < stringArray.length; i++) {
 			if (i != 0) {
 				result.append(" ");
 			}
 			tempFirst = new StringBuilder();
 			tempLast = new StringBuilder();
-			
+
 			tempFirst.append(stringArray[i].replaceFirst("^(qu|[bcdfghjklmnprstvwxyz])+", ""));
-			//System.out.println(tempFirst);
+			// System.out.println(tempFirst);
 			int lengthDif = stringArray[i].length() - tempFirst.length();
-			
+
 			tempLast.append(stringArray[i].substring(0, lengthDif));
-			//System.out.println(tempLast);
-			
+			// System.out.println(tempLast);
+
 			result.append(tempFirst);
 			result.append(tempLast);
 			result.append("ay");
 		}
-		
-		
-		
+
 		return result.toString();
 	}
 
@@ -461,19 +489,19 @@ public class EvaluationService {
 			// System.out.println(alphChars);
 
 			for (int i = 0; i < alphChars.length; i++) {
-				//System.out.print(alphChars[(i+key)%26]);
+				// System.out.print(alphChars[(i+key)%26]);
 				rotMap.put(alphChars[i], alphChars[(i + this.key) % 26]);
 			}
-			//System.out.println();
-			
+			// System.out.println();
+
 			alphChars = "abcdefghijklmnopqrstuvwxyz".toUpperCase().toCharArray();
 			// System.out.println(alphChars);
 
 			for (int i = 0; i < alphChars.length; i++) {
-				//System.out.print(alphChars[(i+key)%26]);
+				// System.out.print(alphChars[(i+key)%26]);
 				rotMap.put(alphChars[i], alphChars[(i + this.key) % 26]);
 			}
-			//System.out.println();
+			// System.out.println();
 
 		}
 
@@ -487,7 +515,7 @@ public class EvaluationService {
 					result.append(charArray[i]);
 				}
 			}
-			//System.out.println(result.toString());
+			// System.out.println(result.toString());
 			return result.toString();
 		}
 
@@ -515,7 +543,7 @@ public class EvaluationService {
 																			// incrementing curNum per loop
 			boolean isPrime = true;
 
-			for (int div = 2; div < curNum; div++) { // checking if j is prime
+			for (int div = 2; div <= curNum / 2; div++) { // checking if j is prime
 				if (curNum % div == 0) { // break if number is divisible by number between 2 and itself
 					isPrime = false;
 					break;
@@ -598,6 +626,7 @@ public class EvaluationService {
 		public static String decode(String string) {
 			return encode(string).replaceAll(" ", "");
 		}
+
 	}
 
 	/**
@@ -698,8 +727,13 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String parsed = given.toString();
+		if (given instanceof LocalDate) {
+			parsed += "T00:00:00";
+		}
+//		System.out.println(parsed);
+//		System.out.println(LocalDateTime.parse(parsed).plusSeconds(1000000000L));
+		return LocalDateTime.parse(parsed).plusSeconds(1000000000L);
 	}
 
 	/**
