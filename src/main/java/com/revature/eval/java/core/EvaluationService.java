@@ -1,7 +1,7 @@
 package com.revature.eval.java.core;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -692,6 +692,13 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
+		if (given.isSupported(ChronoUnit.SECONDS)) {
+			return given.plus(1000000000l, ChronoUnit.SECONDS);
+		} else {
+			return ((LocalDate) given).atStartOfDay().plusSeconds(1000000000l);
+		}
+		
+		/*
 		String parsed = given.toString();		// turn given into string
 		if (given instanceof LocalDate) {		// if given is LocalDate
 			parsed += "T00:00:00";				// add this to fit the format of LocalDateTime
@@ -699,6 +706,7 @@ public class EvaluationService {
 //		System.out.println(parsed);
 //		System.out.println(LocalDateTime.parse(parsed).plusSeconds(1000000000L));
 		return LocalDateTime.parse(parsed).plusSeconds(1000000000L);		// parse back to LocalDateTime, then add 1 billion seconds
+		*/
 	}
 
 	/**
