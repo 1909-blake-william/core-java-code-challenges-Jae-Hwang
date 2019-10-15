@@ -20,7 +20,7 @@ public class EvaluationService {
 	 */
 	public String reverse(String string) {
 		char[] reversed = new char[string.length()];
-		for (int i = reversed.length - 1, j = 0; i >= 0; i--, j++) {
+		for (int i = reversed.length - 1, j = 0; i >= 0; i--, j++) { // Iterating from 0 to length and length to 0
 			reversed[j] = string.charAt(i);
 		}
 		return new String(reversed);
@@ -98,31 +98,17 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			if (this.getSideOne() == this.getSideTwo() && this.sideOne == this.sideThree) {
-				return true;
-			} else {
-				return false;
-			}
+			return this.getSideOne() == this.getSideTwo() && this.sideOne == this.sideThree;
 		}
 
-		public boolean isIsosceles() {
-			if (this.getSideOne() == this.getSideTwo()) {
-				return true;
-			} else if (this.getSideOne() == this.getSideThree()) {
-				return true;
-			} else if (this.getSideTwo() == this.getSideThree()) {
-				return true;
-			} else {
-				return false;
-			}
+		public boolean isIsosceles() { //
+			return this.getSideOne() == this.getSideTwo()
+				|| this.getSideOne() == this.getSideThree()
+				|| this.getSideTwo() == this.getSideThree();
 		}
 
 		public boolean isScalene() {
-			if (!this.isIsosceles()) {
-				return true;
-			} else {
-				return false;
-			}
+			return !this.isIsosceles(); // if not Isosceles, is scalene
 		}
 
 	}
@@ -184,8 +170,8 @@ public class EvaluationService {
 		char[] charArray;
 		charArray = string.toLowerCase().toCharArray();
 		int score = 0;
-		for (char c : charArray) {
-			score += letterValue.get(c);
+		for (char c : charArray) { 			// for each character in the string
+			score += letterValue.get(c);	// add the score for the character
 		}
 
 		return score;
@@ -223,12 +209,12 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) throws IllegalArgumentException {
-		String returnString = string.replaceAll("[^0-9]", "").replaceAll("^1", "");
+		String returnString = string.replaceAll("[^0-9]", "").replaceAll("^1", ""); // strip all none number, and 1 at the start if it starts with 1
 		// System.out.println(returnString);
-		if (returnString.length() != 10) {
-			throw new IllegalArgumentException();
+		if (returnString.length() != 10) {				// if length is not matching the requirements
+			throw new IllegalArgumentException();		// throw this exception
 		}
-		return returnString;
+		return returnString;							// return the numbers as string
 	}
 
 	/**
@@ -248,9 +234,9 @@ public class EvaluationService {
 		Map<String, Integer> returnMap = new HashMap<String, Integer>();
 		for (String word : stringArray) {
 			if (returnMap.containsKey(word)) {
-				returnMap.replace(word, returnMap.get(word) + 1);
+				returnMap.replace(word, returnMap.get(word) + 1);	// if it is already in the map, replace it with 1 higher number
 			} else {
-				returnMap.put(word, 1);
+				returnMap.put(word, 1); 							// if it is not already in the map, add it and set to 1
 			}
 		}
 
@@ -298,28 +284,28 @@ public class EvaluationService {
 		public int indexOf(T t) {
 
 			// System.out.println(sortedList.toString());
-
-			boolean upper; // true = upper; false = lower;
-
-			int i = (int) Math.floor(sortedList.size() / 2);
+			int i = (int) Math.floor(sortedList.size() / 2);		// get index to compare
 			List<T> subList;
 			int subListResult;
 
-			if (sortedList.get(i).compareTo(t) == 0) {
-				return i;
+			if (sortedList.get(i).compareTo(t) == 0) {				// if compare to returns 0
+				return i;											// means it is match, return
+				
 			} else if (sortedList.size() == 1) {
 				return -1;
-			} else if (sortedList.get(i).compareTo(t) > 0) {
-				subList = sortedList.subList(0, i);
-				subListResult = new BinarySearch<>(subList).indexOf(t);
-				if (subListResult == -1) {
+			
+			} else if (sortedList.get(i).compareTo(t) > 0) {			// if compareto is positive, obj at index is greater than T
+				subList = sortedList.subList(0, i);				 		// get list for lesser side.
+				subListResult = new BinarySearch<>(subList).indexOf(t);	// recursively call for less side
+				if (subListResult == -1) {								// if at some point returns -1, means it didnt find
 					return -1;
 				} else {
 					return subListResult;
 				}
-			} else {
-				subList = sortedList.subList(i, sortedList.size());
-				subListResult = new BinarySearch<>(subList).indexOf(t);
+			
+			} else {													// if compareto is negative, obj at index is less than T
+				subList = sortedList.subList(i, sortedList.size());		// get list for greater side
+				subListResult = new BinarySearch<>(subList).indexOf(t);	// recursively call for g
 				if (subListResult == -1) {
 					return -1;
 				} else {
@@ -711,11 +697,7 @@ public class EvaluationService {
 		for (char c : charArray) {
 			charSet.add(c);
 		}
-		if (charSet.size() == 26) {
-			return true;
-		} else {
-			return false;
-		}
+		return (charSet.size() == 26);
 	}
 
 	/**
@@ -753,17 +735,17 @@ public class EvaluationService {
 
 		HashSet<Integer> multiples = new HashSet<Integer>();
 
-		for (int mult = 1; mult < i; mult++) {
-			for (int check : set) {
-				if (mult % check == 0) {
-					multiples.add(mult);
+		for (int mult = 1; mult < i; mult++) { // looping through 1 to given number
+			for (int check : set) { // for each elem in given set, check if iterator is multiple of that
+				if (mult % check == 0) { // mod = 0 means is multiple
+					multiples.add(mult); // add it to the set if multiple
 				}
 			}
 		}
 		// System.out.println(multiples);
 		int result = 0;
 		for (int mult : multiples) {
-			result += mult;
+			result += mult; // sum all multiples to result
 		}
 		return result;
 	}
