@@ -300,16 +300,16 @@ public class EvaluationService {
 				if (subListResult == -1) {								// if at some point returns -1, means it didnt find
 					return -1;
 				} else {
-					return subListResult;
+					return subListResult; 								// add up returns
 				}
 			
 			} else {													// if compareto is negative, obj at index is less than T
-				subList = sortedList.subList(i, sortedList.size());		// get list for greater side
-				subListResult = new BinarySearch<>(subList).indexOf(t);	// recursively call for g
+				subList = sortedList.subList(i, sortedList.size());		// same thing from abov
+				subListResult = new BinarySearch<>(subList).indexOf(t);
 				if (subListResult == -1) {
 					return -1;
 				} else {
-					return i + subListResult;
+					return i + subListResult;							// add i since array starts from i
 				}
 			}
 		}
@@ -356,19 +356,19 @@ public class EvaluationService {
 			if (i != 0) {
 				result.append(" ");
 			}
-			tempFirst = new StringBuilder();
-			tempLast = new StringBuilder();
+			tempFirst = new StringBuilder();						
+			tempLast = new StringBuilder();							
 
-			tempFirst.append(stringArray[i].replaceFirst("^(qu|[bcdfghjklmnprstvwxyz])+", ""));
+			tempFirst.append(stringArray[i].replaceFirst("^(qu|[bcdfghjklmnprstvwxyz])+", ""));		// if string starts with these regex, remove
 			// System.out.println(tempFirst);
-			int lengthDif = stringArray[i].length() - tempFirst.length();
+			int lengthDif = stringArray[i].length() - tempFirst.length();							// get length difference from original
 
-			tempLast.append(stringArray[i].substring(0, lengthDif));
+			tempLast.append(stringArray[i].substring(0, lengthDif));								// get substring from
 			// System.out.println(tempLast);
 
-			result.append(tempFirst);
-			result.append(tempLast);
-			result.append("ay");
+			result.append(tempFirst);				// add two strings above
+			result.append(tempLast);				//
+			result.append("ay");					// add ay at the end.
 		}
 
 		return result.toString();
@@ -393,21 +393,17 @@ public class EvaluationService {
 		int numOfDigits = 0;
 		List<Integer> digits = new ArrayList<Integer>();
 		for (int i = input; i > 0; i /= 10) {
-			digits.add(i % 10);
+			digits.add(i % 10); 				// get all digits
 			numOfDigits += 1;
 		}
 
 		int comp = 0;
-		for (int e : digits) {
+		for (int e : digits) {					// pow them all by number of digits and add em all
 			comp += Math.pow(e, numOfDigits);
 		}
 
 		// System.out.println(comp);
-		if (comp == input) {
-			return true;
-		} else {
-			return false;
-		}
+		return (comp == input);
 	}
 
 	/**
@@ -426,11 +422,11 @@ public class EvaluationService {
 
 		while (l != 1) {
 			for (int i = 2; i <= l; i++) {
-				if (l % i == 0) {
-					result.add((long) i);
-					l = l / i;
+				if (l % i == 0) {				// check if number is divisible by int from 2 to up
+					result.add((long) i);		// add that if divisible, add to the list
+					l = l / i;					// and divide the number by that
 					break;
-				}
+				}								// end of for loop / repeat until l is 1
 			}
 		}
 		return result;
@@ -464,41 +460,35 @@ public class EvaluationService {
 	 */
 	static class RotationalCipher {
 		private int key;
-		private Map<Character, Character> rotMap;
+		private Map<Character, Character> rotMap;		// making the actual map
 
 		public RotationalCipher(int key) {
 			super();
 			this.key = key;
 			rotMap = new HashMap<Character, Character>();
 
-			char[] alphChars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-			// System.out.println(alphChars);
+			char[] alphChars = "abcdefghijklmnopqrstuvwxyz".toCharArray();			// all alphabets
 
 			for (int i = 0; i < alphChars.length; i++) {
-				// System.out.print(alphChars[(i+key)%26]);
-				rotMap.put(alphChars[i], alphChars[(i + this.key) % 26]);
+				rotMap.put(alphChars[i], alphChars[(i + this.key) % 26]);  			// add all alphabets, shifting by rot
 			}
-			// System.out.println();
 
-			alphChars = "abcdefghijklmnopqrstuvwxyz".toUpperCase().toCharArray();
-			// System.out.println(alphChars);
+			alphChars = "abcdefghijklmnopqrstuvwxyz".toUpperCase().toCharArray();	// all alphabets in cap
 
 			for (int i = 0; i < alphChars.length; i++) {
-				// System.out.print(alphChars[(i+key)%26]);
-				rotMap.put(alphChars[i], alphChars[(i + this.key) % 26]);
+				rotMap.put(alphChars[i], alphChars[(i + this.key) % 26]);			// add all cap alphabets, shifting by rot
 			}
-			// System.out.println();
 
 		}
 
 		public String rotate(String string) {
 			char[] charArray = string.toCharArray();
 			StringBuilder result = new StringBuilder();
-			for (int i = 0; i < charArray.length; i++) {
-				if (rotMap.containsKey(charArray[i])) {
-					result.append(rotMap.get(charArray[i]));
-				} else {
-					result.append(charArray[i]);
+			for (int i = 0; i < charArray.length; i++) {							// for each character in array
+				if (rotMap.containsKey(charArray[i])) {								// if it is in the map
+					result.append(rotMap.get(charArray[i]));						// shift using the map, then add it to the return string
+				} else {															// if not in the map
+					result.append(charArray[i]);									// just add it the the return string
 				}
 			}
 			// System.out.println(result.toString());
@@ -525,18 +515,18 @@ public class EvaluationService {
 		}
 
 		int nPrime = 2;
-		for (int primeCount = 1, curNum = 3; primeCount < i; curNum++) { // iterating until we find i number of primes,
-																			// incrementing curNum per loop
+		for (int primeCount = 1, curNum = 3; primeCount < i; curNum++) { 		// iterating until we find i number of primes,
+																				// incrementing curNum per loop
 			boolean isPrime = true;
 
-			for (int div = 2; div <= curNum / 2; div++) { // checking if j is prime
-				if (curNum % div == 0) { // break if number is divisible by number between 2 and itself
+			for (int div = 2; div <= curNum / 2; div++) { 						// checking if j is prime
+				if (curNum % div == 0) { 										// break if number is divisible by number between 2 and itself
 					isPrime = false;
 					break;
 				}
 			}
 
-			if (isPrime) { // if it did not break, means prime, increment prime count
+			if (isPrime) { 														// if it did not break, means prime, increment prime count
 				primeCount++;
 				nPrime = curNum;
 			}
@@ -570,11 +560,11 @@ public class EvaluationService {
 	 */
 
 	private static HashMap<Character, Character> atbashMap = new HashMap<Character, Character>();
-	{
-		String atbashStr = "abcdefghijklmnopqrstuvwxyz";
+	{																			// creating the map for the atbash
+		String atbashStr = "abcdefghijklmnopqrstuvwxyz";	
 		char[] charArray = atbashStr.toCharArray();
-		for (int i = 0; i < charArray.length; i++) {
-			atbashMap.put(charArray[i], charArray[charArray.length - 1 - i]);
+		for (int i = 0; i < charArray.length; i++) {							// for each character
+			atbashMap.put(charArray[i], charArray[charArray.length - 1 - i]); 	// flip it
 		}
 	}
 
@@ -590,13 +580,13 @@ public class EvaluationService {
 			char[] charArray = string.toLowerCase().replaceAll("[^a-z0-9]", "").toCharArray();
 			StringBuilder result = new StringBuilder();
 			for (int i = 0; i < charArray.length; i++) {
-				if (i != 0 && i % 5 == 0) {
+				if (i != 0 && i % 5 == 0) {						// every 5 characters add space, (and not at the start)
 					result.append(' ');
 				}
-				if (atbashMap.containsKey(charArray[i])) {
-					result.append(atbashMap.get(charArray[i]));
+				if (atbashMap.containsKey(charArray[i])) {		// if in the map
+					result.append(atbashMap.get(charArray[i]));	// flip and add
 				} else {
-					result.append(charArray[i]);
+					result.append(charArray[i]);				// if not in the map, just add
 				}
 			}
 			// System.out.println(result.toString());
@@ -609,8 +599,8 @@ public class EvaluationService {
 		 * @param string
 		 * @return
 		 */
-		public static String decode(String string) {
-			return encode(string).replaceAll(" ", "");
+		public static String decode(String string) {		// same as encode, but without spaces.
+			return encode(string).replaceAll(" ", "");		// just do encode and remove spaces.
 		}
 
 	}
@@ -639,42 +629,35 @@ public class EvaluationService {
 	 */
 	public boolean isValidIsbn(String string) {
 
-		char[] charArray = string.replaceAll("-", "").toCharArray();
+		char[] charArray = string.replaceAll("-", "").toCharArray();	// removed all '-'
 		if (charArray.length != 10) {
-			return false;
+			return false;												// return false if length is not 10;
 		} else {
 			int result = 0;
-			for (int i = 2; i <= charArray.length; i++) {
+			for (int i = 2; i <= charArray.length; i++) {				// except last character, going from end to start
 
 				// System.out.print(charArray[charArray.length - i] + "\t");
 				int cVal = Character.getNumericValue(charArray[charArray.length - i]);
 				// System.out.print(cVal + "\t");
-
-				if (cVal < 0 || cVal > 9) {
-					return false;
+				if (cVal < 0 || cVal > 9) {								// if it is not digit
+					return false;										// return 0
 				}
 
-				result += cVal * i;
+				result += cVal * i;										// if it is digit, multiply by 'rule' add it to the result 
 				// System.out.print("\t" + result + "\n");
 			}
 
-			int lastDigit = Character.getNumericValue(charArray[9]);
-			if (lastDigit == 33) {
+			int lastDigit = Character.getNumericValue(charArray[9]);	// for last character
+			if (lastDigit == 33) {										// check if X
 				lastDigit = 10;
-			} else if (lastDigit < 0 || lastDigit > 9) {
+			} else if (lastDigit < 0 || lastDigit > 9) {				// check if it is digit
 				return false;
 			}
-			result += lastDigit;
+			result += lastDigit;										
 
 			// System.out.println(result);
 
-			if (result % 11 == 0) {
-				// System.out.println("tru");
-				return true;
-			} else {
-				// System.out.println("fal");
-				return false;
-			}
+			return (result % 11 == 0);
 		}
 	}
 
@@ -692,12 +675,12 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		char[] charArray = string.toLowerCase().replaceAll("[^a-z]", "").toCharArray();
+		char[] charArray = string.toLowerCase().replaceAll("[^a-z]", "").toCharArray();   // to lower case, and strip all thats not alphabet
 		HashSet<Character> charSet = new HashSet<Character>();
 		for (char c : charArray) {
-			charSet.add(c);
+			charSet.add(c);						// add all characters to the set
 		}
-		return (charSet.size() == 26);
+		return (charSet.size() == 26);			// return true if all 26 alphabets are in, false if not.
 	}
 
 	/**
@@ -709,13 +692,13 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		String parsed = given.toString();
-		if (given instanceof LocalDate) {
-			parsed += "T00:00:00";
+		String parsed = given.toString();		// turn given into string
+		if (given instanceof LocalDate) {		// if given is LocalDate
+			parsed += "T00:00:00";				// add this to fit the format of LocalDateTime
 		}
 //		System.out.println(parsed);
 //		System.out.println(LocalDateTime.parse(parsed).plusSeconds(1000000000L));
-		return LocalDateTime.parse(parsed).plusSeconds(1000000000L);
+		return LocalDateTime.parse(parsed).plusSeconds(1000000000L);		// parse back to LocalDateTime, then add 1 billion seconds
 	}
 
 	/**
@@ -735,17 +718,17 @@ public class EvaluationService {
 
 		HashSet<Integer> multiples = new HashSet<Integer>();
 
-		for (int mult = 1; mult < i; mult++) { // looping through 1 to given number
-			for (int check : set) { // for each elem in given set, check if iterator is multiple of that
-				if (mult % check == 0) { // mod = 0 means is multiple
-					multiples.add(mult); // add it to the set if multiple
+		for (int mult = 1; mult < i; mult++) { 					// looping through 1 to given number
+			for (int check : set) { 							// for each elem in given set, check if iterator is multiple of that
+				if (mult % check == 0) { 						// mod = 0 means is multiple
+					multiples.add(mult); 						// add it to the set if multiple
 				}
 			}
 		}
 		// System.out.println(multiples);
 		int result = 0;
 		for (int mult : multiples) {
-			result += mult; // sum all multiples to result
+			result += mult; 									// sum all multiples to result
 		}
 		return result;
 	}
@@ -787,25 +770,25 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isLuhnValid(String string) {
-		char[] charArray = string.replaceAll(" ", "").toCharArray();
+		char[] charArray = string.replaceAll(" ", "").toCharArray();		// strip spaces
 		if (charArray.length < 2) {
-			return false;
+			return false;													// string is too short, return false;
 		} else {
 			int result = 0;
-			for (int i = 1; i <= charArray.length; i++) {
+			for (int i = 1; i <= charArray.length; i++) {					// for all characters
 
 				// System.out.print(charArray[charArray.length - i] + "\t");
 				int cVal = Character.getNumericValue(charArray[charArray.length - i]);
-
+																			// going from end
 				if (cVal < 0 || cVal > 9) {
 					return false;
 				}
 
-				if (i % 2 == 0) {
-					cVal *= 2;
+				if (i % 2 == 0) {											// every other two
+					cVal *= 2;												// double
 					// System.out.print(cVal + " ");
-					if (cVal > 9) {
-						cVal -= 9;
+					if (cVal > 9) {											// if doubled is over 9
+						cVal -= 9;											// drop it down -9
 						// System.out.print(cVal);
 					}
 				}
@@ -816,13 +799,7 @@ public class EvaluationService {
 
 			// System.out.println(result);
 
-			if (result % 10 == 0) {
-				// System.out.println("tru");
-				return true;
-			} else {
-				// System.out.println("fal");
-				return false;
-			}
+			return (result % 10 == 0);		// if mod 10 is 0 return true, if not return false;
 		}
 	}
 
@@ -854,34 +831,34 @@ public class EvaluationService {
 	 * @return
 	 */
 	private static HashMap<String, Integer> wordSet = new HashMap<String, Integer>();
-	{
+	{					// using map because i forgot you can do switch with strings now
 		wordSet.put("plus", 0);
 		wordSet.put("minus", 1);
 		wordSet.put("multiplied", 2);
 		wordSet.put("divided", 3);
 	}
 
-	public int solveWordProblem(String string) {
-		String[] stringArray = string.replaceAll("[^ \\-a-zA-Z0-9]+", "").split(" ");
-		List<Integer> nums = new ArrayList<Integer>();
-		int operator = 4; // 4 = invalid
-							// System.out.println(Arrays.toString(stringArray));
+	public int solveWordProblem(String string) {		// assuming it only uses 2 numbers and 1 operator
+		String[] stringArray = string.replaceAll("[^ \\-a-zA-Z0-9]+", "").split(" "); 	// typical strip/split
+		List<Integer> nums = new ArrayList<Integer>();									// list for numbers
+		int operator = 4; 																// 4 = invalid
+		// System.out.println(Arrays.toString(stringArray));
 		for (String e : stringArray) {
-			if (e.matches("^-?[0-9]+$")) {
+			if (e.matches("^-?[0-9]+$")) {				// if it matches regex, add it to number list
 				// System.out.println(Integer.valueOf(e));
 				nums.add(Integer.valueOf(e));
-			} else if (wordSet.containsKey(e)) {
+			} else if (wordSet.containsKey(e)) {		// if it is contained in operator map, save to use later
 				// System.out.println(e);
 				operator = wordSet.get(e);
 			}
 		}
 
 		if (2 != nums.size() || operator == 4) {
-			return -1;
+			return -404;							// 404 operator not found
 		}
 
-		switch (operator) {
-		case 0:
+		switch (operator) {		// using map because i forgot you can do switch with strings now
+		case 0:					// switch using operator from earlier 
 			return nums.get(0) + nums.get(1);
 		case 1:
 			return nums.get(0) - nums.get(1);
@@ -891,7 +868,7 @@ public class EvaluationService {
 			return nums.get(0) / nums.get(1);
 
 		default:
-			return -1;
+			return -404;		// code shouldnt get here.
 		}
 	}
 }
